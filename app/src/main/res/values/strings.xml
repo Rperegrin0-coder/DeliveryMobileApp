@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">MobileApp</string>
+    <string name="requests">Requests</string>
+    <string name="rewards">Rewards</string>
+    <string name="profile">Profile</string>
+    <string name="delivery_status">Delivery Status</string>
+    <string name="google_maps_key">AIzaSyBPELEebdsZFbEQGkbHMKVvVSxu5PJ9jec</string>
 </resources>
+
+
+
+
+
+
+
+
+

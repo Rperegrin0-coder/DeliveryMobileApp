@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/navigation_delivery_status"
+        android:icon="@drawable/placeholder"
+        android:title="@string/delivery_status" />
+    <item android:id="@+id/navigation_requests"
+        android:icon="@drawable/placeholder"
+        android:title="@string/requests" />
+    <item android:id="@+id/navigation_rewards"
+        android:icon="@drawable/placeholder"
+        android:title="@string/rewards" />
+    <item android:id="@+id/navigation_profile"
+        android:icon="@drawable/placeholder"
+        android:title="@string/profile" />
+</menu>

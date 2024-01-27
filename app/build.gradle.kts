@@ -30,15 +30,20 @@ android {
 }
 
 dependencies {
-
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation( "com.google.firebase:firebase-auth:20.0.0") // use the latest version available
-            // use the latest version available
-    implementation("com.google.firebase:firebase-database:19.6.0") // Use the latest version available)
+    implementation ("com.android.volley:volley:1.2.1")
+
+    // Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth") // Firebase Authentication
+    implementation("com.google.firebase:firebase-database") // Firebase Realtime Database
+    implementation("com.google.firebase:firebase-firestore") // Firebase Firestore
+    implementation ("com.google.android.libraries.places:places:2.4.0")
+
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
