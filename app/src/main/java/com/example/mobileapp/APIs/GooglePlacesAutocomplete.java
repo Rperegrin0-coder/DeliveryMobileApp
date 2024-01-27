@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class GooglePlacesAutocomplete extends ArrayAdapter<AutocompletePrediction> implements Filterable {
+public class GooglePlacesAutocomplete extends ArrayAdapter<String> implements Filterable {
     private List<AutocompletePrediction> resultList;
     private PlacesClient placesClient;
     private final Object lock = new Object();
@@ -41,8 +41,8 @@ public class GooglePlacesAutocomplete extends ArrayAdapter<AutocompletePredictio
     }
 
     @Override
-    public AutocompletePrediction getItem(int index) {
-        return resultList.get(index);
+    public String getItem(int position) {
+        return resultList.get(position).getPrimaryText(null).toString();
     }
 
     @Override
@@ -51,12 +51,9 @@ public class GooglePlacesAutocomplete extends ArrayAdapter<AutocompletePredictio
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.autocomplete_place_item, parent, false);
         }
 
-        AutocompletePrediction item = getItem(position);
         TextView textView = convertView.findViewById(R.id.autocomplete_text);
-
-        if (item != null) {
-            textView.setText(item.getPrimaryText(null).toString());
-        }
+        String item = getItem(position);
+        textView.setText(item);
 
         return convertView;
     }
@@ -75,8 +72,12 @@ public class GooglePlacesAutocomplete extends ArrayAdapter<AutocompletePredictio
                         } catch (InterruptedException e) {
                             return filterResults;
                         }
-                        filterResults.values = resultList;
-                        filterResults.count = resultList.size();
+                        ArrayList<String> suggestions = new ArrayList<>();
+                        for (AutocompletePrediction prediction : resultList) {
+                            suggestions.add(prediction.getPrimaryText(null).toString());
+                        }
+                        filterResults.values = suggestions;
+                        filterResults.count = suggestions.size();
                     }
                 }
                 return filterResults;
@@ -85,6 +86,8 @@ public class GooglePlacesAutocomplete extends ArrayAdapter<AutocompletePredictio
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results != null && results.count > 0) {
+                    clear();
+                    addAll((ArrayList<String>) results.values);
                     notifyDataSetChanged();
                 } else {
                     notifyDataSetInvalidated();
