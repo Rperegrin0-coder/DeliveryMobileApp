@@ -2,6 +2,12 @@ package com.example.mobileapp.Requestor.RequestorHomePage.Fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.Manifest;  // Correct import for Manifest
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,16 +26,21 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mobileapp.APIs.GooglePlacesAutocomplete;
 import com.example.mobileapp.APIs.RandomGenerator;
-
+import com.example.mobileapp.APIs.GPS;
 
 import com.example.mobileapp.R;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+
 
 public class RequestsFragment extends Fragment {
 
@@ -43,6 +54,17 @@ public class RequestsFragment extends Fragment {
 
     private FirebaseFirestore db;
     private DatabaseReference databaseReference;
+    private static final int REQUEST_CODE = 123;
+
+    private GPS gps;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        gps = new GPS(requireContext());
+    }
+
 
     @Nullable
     @Override
@@ -57,10 +79,18 @@ public class RequestsFragment extends Fragment {
         AutoCompleteTextView pickupAddressAutoComplete = view.findViewById(R.id.pickupAddressAutoComplete);
         AutoCompleteTextView deliveryAddressAutoComplete = view.findViewById(R.id.deliveryAddressAutoComplete);
 
+        Button addPickupDetailsButton = view.findViewById(R.id.addPickupDetailsButton);
+        Button addDeliveryDetailsButton = view.findViewById(R.id.addDeliveryDetailsButton);
+
+        addPickupDetailsButton.setOnClickListener(v -> openAddressDetailsDialog("pickup"));
+        addDeliveryDetailsButton.setOnClickListener(v -> openAddressDetailsDialog("delivery"));
+
+
 
         GooglePlacesAutocomplete adapter = new GooglePlacesAutocomplete(getContext(), R.layout.autocomplete_place_item);
         pickupAddressAutoComplete.setAdapter(adapter);
         deliveryAddressAutoComplete.setAdapter(adapter);
+
 
 
         // Initialize EditText fields
@@ -83,6 +113,15 @@ public class RequestsFragment extends Fragment {
         // Initialize Button
         submitRequestButton = view.findViewById(R.id.submitRequestButton);
 
+        Button useGPSButton = view.findViewById(R.id.useGpsButton); // Ensure you have this button in your layout
+        useGPSButton.setOnClickListener(v -> {
+            if(gps.isPermissionGranted()) {
+                fetchCurrentLocation();
+            } else {
+                requestLocationPermissions();
+            }
+        });
+
 
         // Ensure all other UI components are initialized similarly before this line
 
@@ -95,6 +134,77 @@ public class RequestsFragment extends Fragment {
 
         return view;
     }
+
+    private void fetchCurrentLocation() {
+        // Ensure the GPS class is initialized
+        if (gps == null) {
+            gps = new GPS(getContext()); // Adjust this according to how GPS is instantiated
+        }
+
+        gps.getCurrentLocation(location -> {
+            if (location != null) {
+                // Use Geocoder to convert the location to a readable address
+                Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(
+                            location.getLatitude(), location.getLongitude(), 1);
+                    if (!addresses.isEmpty()) {
+                        // Get the first address line or formatted address
+                        String address = addresses.get(0).getAddressLine(0);
+                        // Update the pickup address EditText
+                        pickupAddress.setText(address);
+                    }
+                } catch (IOException e) {
+                    // Handle exception: Geocoder may fail
+                    Log.e(TAG, "Geocoder failed", e);
+                }
+            } else {
+                // Handle case where location is null
+                Toast.makeText(getContext(), "Unable to fetch location. Please ensure location services are enabled.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
+    private void requestLocationPermissions() {
+        requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION },
+                LOCATION_PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                fetchCurrentLocation();
+            } else {
+                // Handle permission denial
+            }
+        }
+    }
+    // Function to open the address details dialog
+    private void openAddressDetailsDialog(String addressType) {
+        AddressDetailsDialogFragment dialogFragment = AddressDetailsDialogFragment.newInstance(addressType);
+        dialogFragment.setTargetFragment(this, REQUEST_CODE); // Define REQUEST_CODE as a constant
+        dialogFragment.show(getParentFragmentManager(), "AddressDetailsDialog");
+    }
+
+    // Callback to receive the address details
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            String addressType = data.getStringExtra("addressType");
+            String detailedAddress = data.getStringExtra("detailedAddress");
+            // Handle the detailed address (store in ViewModel or send to the server)
+            if ("pickup".equals(addressType)) {
+                pickupAddress.setText(detailedAddress);
+            } else if ("delivery".equals(addressType)) {
+                deliveryAddress.setText(detailedAddress);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     private void submitRequest() {
         RandomGenerator randomGenerator = new RandomGenerator();

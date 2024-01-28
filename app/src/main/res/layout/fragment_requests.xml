@@ -43,6 +43,20 @@
             android:completionThreshold="2"
             android:maxLines="1" />
 
+        <Button
+            android:id="@+id/addPickupDetailsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Details" />
+
+
+        <Button
+            android:id="@+id/useGpsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotationX="-15"
+            android:text="Use GPS" />
+
         <EditText
             android:id="@+id/pickupContactName"
             android:layout_width="match_parent"
@@ -65,6 +79,12 @@
             android:imeOptions="actionSearch"
             android:completionThreshold="2"
             android:maxLines="1" />
+
+        <Button
+            android:id="@+id/addDeliveryDetailsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Details" />
 
         <EditText
             android:id="@+id/deliveryRecipientName"
