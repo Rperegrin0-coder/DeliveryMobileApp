@@ -4,8 +4,10 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;  // Correct import for Manifest
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.mobileapp.APIs.Camera;
 import com.example.mobileapp.APIs.GooglePlacesAutocomplete;
 import com.example.mobileapp.APIs.RandomGenerator;
 import com.example.mobileapp.APIs.GPS;
@@ -36,6 +39,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import android.app.DatePickerDialog;
+import java.util.Calendar;
+
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,6 +50,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class RequestsFragment extends Fragment {
+    //constants for requests
+    private static final int PICKUP_DATE_REQUEST = 1;
+    private static final int DELIVERY_DATE_REQUEST = 2;
+    private static final int REQUEST_CODE = 123;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
+
 
     // UI components declaration
     private EditText parcelDescription, parcelWeight, pickupAddress, pickupContactName,
@@ -54,10 +67,72 @@ public class RequestsFragment extends Fragment {
 
     private FirebaseFirestore db;
     private DatabaseReference databaseReference;
-    private static final int REQUEST_CODE = 123;
-
     private GPS gps;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
+    private Bitmap parcelImage;
+
+
+    //Method to show the DatePickerDialog
+    private void showDatePickerDialog(int dateType) {
+        // Get the current date
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // DatePickerDialog listens for when the user sets the date
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(),
+                (view, year1, monthOfYear, dayOfMonth) -> {
+                    // Update the EditText with the chosen date
+                    String selectedDate = String.format(Locale.getDefault(), "%d-%02d-%02d", year1, monthOfYear + 1, dayOfMonth);
+                    // Check which dateType it is and set the text on the correct EditText
+                    if (dateType == PICKUP_DATE_REQUEST) {
+                        pickupDateTime.setText(selectedDate);
+                        showTimePickerDialog(PICKUP_DATE_REQUEST);
+                    } else if (dateType == DELIVERY_DATE_REQUEST) {
+                        deliveryDateTime.setText(selectedDate);
+                        showTimePickerDialog(DELIVERY_DATE_REQUEST);
+                    }
+                },
+                year,
+                month,
+                day
+        );
+
+        // Set the DatePickerDialog to not allow past dates
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        // Show the DatePickerDialog
+        datePickerDialog.show();
+    }
+    private void showTimePickerDialog(int dateType) {
+        // Get the current time
+        final Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // TimePickerDialog listens for when the user sets the time
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                getContext(),
+                (view, hourOfDay, minute1) -> {
+                    // Format and set the time on the correct EditText
+                    String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute1);
+                    if (dateType == PICKUP_DATE_REQUEST) {
+                        String existingDate = pickupDateTime.getText().toString();
+                        pickupDateTime.setText(String.format("%s %s", existingDate, selectedTime));
+                    } else if (dateType == DELIVERY_DATE_REQUEST) {
+                        String existingDate = deliveryDateTime.getText().toString();
+                        deliveryDateTime.setText(String.format("%s %s", existingDate, selectedTime));
+                    }
+                },
+                hour,
+                minute,
+                true // or false for 12 hour time
+        );
+
+        // Show the TimePickerDialog
+        timePickerDialog.show();
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +165,18 @@ public class RequestsFragment extends Fragment {
         GooglePlacesAutocomplete adapter = new GooglePlacesAutocomplete(getContext(), R.layout.autocomplete_place_item);
         pickupAddressAutoComplete.setAdapter(adapter);
         deliveryAddressAutoComplete.setAdapter(adapter);
+
+        EditText pickupDateTimeEditText = view.findViewById(R.id.pickupDateTime);
+        pickupDateTimeEditText.setOnClickListener(v -> showDatePickerDialog(PICKUP_DATE_REQUEST));
+
+        EditText deliveryDateTimeEditText = view.findViewById(R.id.deliveryDateTime);
+        deliveryDateTimeEditText.setOnClickListener(v -> showDatePickerDialog(DELIVERY_DATE_REQUEST));
+
+        Camera camera = new Camera(getActivity());
+
+        Button takePhotoButton = view.findViewById(R.id.attachImageButton);
+        takePhotoButton.setOnClickListener(v -> camera.takePhoto());
+
 
 
 
@@ -124,6 +211,8 @@ public class RequestsFragment extends Fragment {
 
 
         // Ensure all other UI components are initialized similarly before this line
+
+
 
         submitRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,18 +281,32 @@ public class RequestsFragment extends Fragment {
     // Callback to receive the address details
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Check for the address details request
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             String addressType = data.getStringExtra("addressType");
             String detailedAddress = data.getStringExtra("detailedAddress");
-            // Handle the detailed address (store in ViewModel or send to the server)
+
             if ("pickup".equals(addressType)) {
                 pickupAddress.setText(detailedAddress);
             } else if ("delivery".equals(addressType)) {
                 deliveryAddress.setText(detailedAddress);
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
+
+        // Check for the camera image capture request
+        if (requestCode == Camera.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && data != null) {
+            Bundle extras = data.getExtras();
+            if (extras != null) {
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                // TODO: Handle the camera image here
+                // For example, you could display the image in an ImageView or save it
+            }
+        }
     }
+
+
 
 
     private void submitRequest() {
@@ -211,26 +314,32 @@ public class RequestsFragment extends Fragment {
         randomGenerator.getRandomNumber(new RandomGenerator.RandomNumberCallback() {
             @Override
             public void onNumberGenerated(String randomNumber) {
-                // Check for null or error responses
-                if (randomNumber != null) {
-                    if (randomNumber.startsWith("Error:")) {
-                        // Log the specific error message received from RandomGenerator
-                        Log.e(TAG, randomNumber);
-                        Toast.makeText(getContext(), "Failed to generate parcel number. Error: " + randomNumber, Toast.LENGTH_LONG).show();
+                if (randomNumber != null && !randomNumber.startsWith("Error:")) {
+                    // If randomNumber is valid and image is available, proceed with saving the request
+                    if (parcelImage != null) {
+                        uploadImageAndSaveRequest(randomNumber, parcelImage);
                     } else {
-                        // If randomNumber is valid, proceed with saving the request
-                        saveRequestToFirebase(randomNumber);
+                        // If no image, proceed without image
+                        saveRequestToFirebase(randomNumber, null);
                     }
                 } else {
-                    // Handle the case where randomNumber is null
-                    Log.e(TAG, "Random number generation returned null.");
-                    Toast.makeText(getContext(), "Error generating parcel number. Please try again.", Toast.LENGTH_SHORT).show();
+                    // Handle error or null cases
+                    String error = randomNumber != null ? randomNumber : "Error generating parcel number. Please try again.";
+                    Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
-    private void saveRequestToFirebase(String parcelNumber) {
+    private void uploadImageAndSaveRequest(String parcelNumber, Bitmap image) {
+        // Convert Bitmap to byte array (same as shown in previous example)
+        // Upload the image and get the URL
+        // On success of image upload, call saveRequestToFirebase with the image URL
+    }
+
+
+
+    private void saveRequestToFirebase(String parcelNumber, @Nullable String imageUrl) {
         // Add try-catch for NullPointerException
         try {
             // Collect data from form fields and add debug logs
@@ -268,7 +377,7 @@ public class RequestsFragment extends Fragment {
 
 
 
-
+            // Create a HashMap to store the data
             Map<String, Object> requestData = new HashMap<>();
             requestData.put("parcelDescription", description);
             requestData.put("parcelNumber", parcelNumber);
@@ -285,6 +394,10 @@ public class RequestsFragment extends Fragment {
             requestData.put("parcelSize", size);
             requestData.put("isFragile", isFragile);
 
+            if (imageUrl != null) {
+                requestData.put("imageUrl", imageUrl);
+            }
+
             databaseReference.child("requests").push().setValue(requestData)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(getContext(), "Request submitted successfully", Toast.LENGTH_SHORT).show();
@@ -298,10 +411,13 @@ public class RequestsFragment extends Fragment {
         } catch (NullPointerException e) {
             Log.e(TAG, "NullPointerException caught in saveRequestToFirebase", e);
         }
-    }
 
     // Additional methods (e.g., DatePickerDialog)...
+    }
 }
+
+
+
 
 
 

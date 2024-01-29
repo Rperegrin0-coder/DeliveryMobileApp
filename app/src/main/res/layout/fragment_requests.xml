@@ -15,6 +15,13 @@
             android:layout_height="wrap_content"
             android:hint="Parcel Description" />
 
+        <Button
+            android:id="@+id/attachImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attach Image" />
+
+
         <Spinner
             android:id="@+id/parcelSize"
             android:layout_width="match_parent"
@@ -103,13 +110,18 @@
             android:id="@+id/pickupDateTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Pickup Date and Time" />
+            android:hint="Pickup Date and Time"
+            android:focusable="false"
+            android:onClick="showDatePickerDialog" />
 
         <EditText
             android:id="@+id/deliveryDateTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Delivery Date and Time" />
+            android:hint="Delivery Date and Time"
+            android:focusable="false"
+            android:onClick="showDatePickerDialog"/>
+
 
         <!-- Additional Instructions -->
         <EditText
