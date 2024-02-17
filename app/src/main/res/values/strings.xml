@@ -5,6 +5,14 @@
     <string name="profile">Profile</string>
     <string name="delivery_status">Delivery Status</string>
     <string name="google_maps_key">AIzaSyBPELEebdsZFbEQGkbHMKVvVSxu5PJ9jec</string>
+    <string name="channel_name" />
+    <string name="channel_description" />
+    <string name="captured_image" />
+    <string name="header_image_description" />
+    <string name="aba">Description of the header image</string>
+    <string name="undraw_delivery">Description of the header image</string>
+    <string name="undraw_name">Description of the header image</string>
+
 </resources>
 
 

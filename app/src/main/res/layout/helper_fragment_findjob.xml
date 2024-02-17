@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- RecyclerView to display delivery requests -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp" />
+
+
+
+    <TextView
+        android:id="@+id/parcelDescriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Parcel Description"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/parcelWeightTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Parcel Weight"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/pickupAddressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pickup Address"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/pickupContactNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pickup Contact Name"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/pickupContactPhoneTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pickup Contact Phone"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/deliveryAddressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delivery Address"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/deliveryRecipientNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delivery Recipient Name"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/deliveryRecipientPhoneTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delivery Recipient Phone"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/pickupDateTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pickup Date and Time"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/deliveryDateTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delivery Date and Time"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/additionalInstructionsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Additional Instructions"
+        android:textSize="16sp" />
+
+</LinearLayout>

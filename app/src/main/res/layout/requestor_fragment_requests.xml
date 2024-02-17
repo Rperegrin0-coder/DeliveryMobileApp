@@ -1,0 +1,210 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header image or logo -->
+
+        <!-- Parcel Details Section -->
+
+        <!-- Header container -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="167dp"
+            android:padding="16dp">
+
+            <!-- ImageView 1 -->
+
+            <!-- ImageView 2 -->
+
+
+            <ImageView
+                android:id="@+id/headerImageView"
+                android:layout_width="97dp"
+                android:layout_height="67dp"
+                android:contentDescription="@string/undraw_delivery"
+                android:scaleType="fitCenter"
+                android:src="@drawable/undraw_delivery"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@id/hImageView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/hImageView"
+                android:layout_width="151dp"
+                android:layout_height="36dp"
+                android:contentDescription="@string/undraw_name"
+                android:scaleType="fitCenter"
+                android:src="@drawable/undraw_name"
+                tools:layout_editor_absoluteX="-7dp"
+                tools:layout_editor_absoluteY="16dp" />
+
+            <TextView
+                android:id="@+id/deliveryRequest"
+                android:layout_width="177dp"
+                android:layout_height="64dp"
+                android:text="Delivery Request"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                tools:layout_editor_absoluteX="177dp"
+                tools:layout_editor_absoluteY="108dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/parcelDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Parcel Description" />
+
+        <Button
+            android:id="@+id/attachImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attach Image" />
+
+        <TextView
+            android:id="@+id/imageAttachedTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="Image Attached"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/capturedImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/captured_image"
+            android:visibility="gone" />
+
+
+        <Spinner
+            android:id="@+id/parcelSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/parcelWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Weight (kg or lbs)" />
+
+        <CheckBox
+            android:id="@+id/fragileCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contains Fragile Items" />
+
+        <!-- Pickup Location Section -->
+        <AutoCompleteTextView
+            android:id="@+id/pickupAddressAutoComplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="2"
+            android:hint="Enter pickup address"
+            android:imeOptions="actionSearch"
+            android:inputType="textPostalAddress"
+            android:maxLines="1" />
+
+        <Button
+            android:id="@+id/addPickupDetailsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Details" />
+
+
+        <Button
+            android:id="@+id/useGpsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotationX="-15"
+            android:text="Use GPS" />
+
+        <EditText
+            android:id="@+id/pickupContactName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contact Name" />
+
+        <EditText
+            android:id="@+id/pickupContactPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contact Phone Number" />
+
+        <!-- Delivery Location Section -->
+        <AutoCompleteTextView
+            android:id="@+id/deliveryAddressAutoComplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="2"
+            android:hint="Enter delivery address"
+            android:imeOptions="actionSearch"
+            android:inputType="textPostalAddress"
+            android:maxLines="1" />
+
+        <Button
+            android:id="@+id/addDeliveryDetailsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Details" />
+
+        <EditText
+            android:id="@+id/deliveryRecipientName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Recipient Name" />
+
+        <EditText
+            android:id="@+id/deliveryRecipientPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Recipient Phone Number" />
+
+        <!-- Preferred Pickup and Delivery Times -->
+        <EditText
+            android:id="@+id/pickupDateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:hint="Pickup Date and Time"
+            android:onClick="showDatePickerDialog" />
+
+        <EditText
+            android:id="@+id/deliveryDateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:hint="Delivery Date and Time"
+            android:onClick="showDatePickerDialog" />
+
+
+        <!-- Additional Instructions -->
+        <EditText
+            android:id="@+id/additionalInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Additional Instructions" />
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/submitRequestButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Submit Request" />
+
+
+    </LinearLayout>
+</ScrollView>

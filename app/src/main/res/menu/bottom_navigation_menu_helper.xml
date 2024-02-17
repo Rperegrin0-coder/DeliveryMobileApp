@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/helper_navigation_my_deliveries"
+        android:icon="@drawable/placeholder"
+        android:title="My Deliveries" />
+    <item android:id="@+id/helper_navigation_find_job"
+        android:icon="@drawable/placeholder"
+        android:title="Find Job" />
+    <item android:id="@+id/helper_navigation_rewards"
+        android:icon="@drawable/placeholder"
+        android:title="Rewards" />
+    <item android:id="@+id/helper_navigation_profile"
+        android:icon="@drawable/placeholder"
+        android:title="Profile" />
+</menu>

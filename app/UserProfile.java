@@ -1,4 +1,4 @@
-package com.example.mobileapp;
+package com.example.sustainablemobileapp;
 
 public class UserProfile {
     private String fullName;

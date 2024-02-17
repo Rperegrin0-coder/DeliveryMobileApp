@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- dialog_delivery_details.xml -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="216dp"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Define your TextViews and other Views here to display the delivery details -->
+
+        <!-- TextView for Parcel Description -->
+        <TextView
+            android:id="@+id/tvParcelDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Parcel Description: " />
+
+        <TextView
+            android:id="@+id/r_parcelDescriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Parcel Description"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- TextView for Parcel Weight -->
+        <TextView
+            android:id="@+id/parcelWeightTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Parcel Weight"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- TextView for Pickup Address -->
+        <TextView
+            android:id="@+id/pickupAddressTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Pickup Address"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- TextView for Pickup Contact Name -->
+        <TextView
+            android:id="@+id/pickupContactNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Pickup Contact Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- TextView for Pickup Contact Phone -->
+        <TextView
+            android:id="@+id/pickupContactPhoneTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Pickup Contact Phone"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- TextView for Delivery Address -->
+        <TextView
+            android:id="@+id/deliveryAddressTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Delivery Address"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- TextView for Delivery Recipient Name -->
+        <TextView
+            android:id="@+id/deliveryRecipientNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Delivery Recipient Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- TextView for Delivery Recipient Phone -->
+        <TextView
+            android:id="@+id/deliveryRecipientPhoneTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Delivery Recipient Phone"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- TextView for Pickup Date and Time -->
+        <TextView
+            android:id="@+id/pickupDateTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Pickup Date and Time"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- TextView for Delivery Date and Time -->
+        <TextView
+            android:id="@+id/deliveryDateTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Delivery Date and Time"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- TextView for Additional Instructions -->
+        <TextView
+            android:id="@+id/additionalInstructionsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Additional Instructions"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+
+        <!-- Add more TextViews for other details like status, pick up date, etc. -->
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

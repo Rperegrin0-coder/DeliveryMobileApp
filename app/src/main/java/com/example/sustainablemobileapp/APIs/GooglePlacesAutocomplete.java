@@ -1,0 +1,112 @@
+package com.example.sustainablemobileapp.APIs;
+
+import com.example.sustainablemobileapp.R;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.TextView;
+
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class GooglePlacesAutocomplete extends ArrayAdapter<String> implements Filterable {
+    private List<AutocompletePrediction> resultList;
+    private PlacesClient placesClient;
+    private final Object lock = new Object();
+
+    public GooglePlacesAutocomplete(Context context, int resource) {
+        super(context, resource);
+        Places.initialize(context, context.getString(R.string.google_maps_key));
+        placesClient = Places.createClient(context);
+        resultList = new ArrayList<>();
+    }
+
+    @Override
+    public int getCount() {
+        return resultList.size();
+    }
+
+    @Override
+    public String getItem(int position) {
+        return resultList.get(position).getPrimaryText(null).toString();
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.requestor_autocomplete_place_item, parent, false);
+        }
+
+        TextView textView = convertView.findViewById(R.id.autocomplete_text);
+        String item = getItem(position);
+        textView.setText(item);
+
+        return convertView;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
+                if (constraint != null) {
+                    synchronized (lock) {
+                        getAutocomplete(constraint);
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            return filterResults;
+                        }
+                        ArrayList<String> suggestions = new ArrayList<>();
+                        for (AutocompletePrediction prediction : resultList) {
+                            suggestions.add(prediction.getPrimaryText(null).toString());
+                        }
+                        filterResults.values = suggestions;
+                        filterResults.count = suggestions.size();
+                    }
+                }
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                if (results != null && results.count > 0) {
+                    clear();
+                    addAll((ArrayList<String>) results.values);
+                    notifyDataSetChanged();
+                } else {
+                    notifyDataSetInvalidated();
+                }
+            }
+        };
+    }
+
+    private void getAutocomplete(CharSequence constraint) {
+        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
+                .setQuery(constraint.toString())
+                .build();
+
+        placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
+            synchronized (lock) {
+                resultList.clear();
+                resultList.addAll(response.getAutocompletePredictions());
+                lock.notify();
+            }
+        }).addOnFailureListener((exception) -> {
+            synchronized (lock) {
+                lock.notify();
+            }
+        });
+    }
+}

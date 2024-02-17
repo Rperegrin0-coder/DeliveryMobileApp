@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mobileapp"
+    namespace = "com.example.sustainablemobileapp" // Update the namespace here
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.mobileapp"
+        applicationId = "com.example.sustainablemobileapp" // Also update the applicationId
         minSdk = 24
         targetSdk = 33
         versionCode = 1
@@ -34,6 +34,9 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation ("com.android.volley:volley:1.2.1")
+    implementation ("androidx.fragment:fragment:1.3.0") // Check for the latest version
+    implementation ("androidx.cardview:cardview:1.0.0")
+
 
     // Firebase dependencies
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
@@ -42,6 +45,7 @@ dependencies {
     implementation("com.google.firebase:firebase-database") // Firebase Realtime Database
     implementation("com.google.firebase:firebase-firestore") // Firebase Firestore
     implementation ("com.google.android.libraries.places:places:2.4.0")
+    implementation ("com.google.firebase:firebase-storage:19.2.0")
 
 
 
