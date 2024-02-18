@@ -13,6 +13,11 @@
     <string name="undraw_delivery">Description of the header image</string>
     <string name="undraw_name">Description of the header image</string>
 
+    <string name="undraw_box">Description of the header image</string>
+    <string name="location" />
+
+
+
 </resources>
 
 

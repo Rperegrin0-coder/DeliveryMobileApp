@@ -23,7 +23,17 @@
             android:id="@+id/parcelDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Parcel Description:: " />
+            android:text="Parcel Description: " />
+
+        <!-- Adding ProgressBar to represent delivery status visually -->
+        <ProgressBar
+            android:id="@+id/deliveryProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="20"
+            android:max="100"
+            android:progressDrawable="@drawable/custom_progress_bar" />
 
         <TextView
             android:id="@+id/deliveryStatusTextView"
@@ -35,8 +45,6 @@
             android:id="@+id/viewDetailsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="View More Details" />
-
+            android:text="View Request Details" />
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

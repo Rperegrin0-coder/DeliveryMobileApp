@@ -17,60 +17,68 @@
         <!-- Header container -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="167dp"
-            android:padding="16dp">
+            android:layout_height="192dp"
+            android:padding="16dp">>
+
+            <ImageView
+                android:id="@+id/undraw_box"
+                android:layout_width="141dp"
+                android:layout_height="113dp"
+                android:layout_marginTop="4dp"
+                android:contentDescription="@string/undraw_box"
+                android:scaleType="fitCenter"
+                android:src="@drawable/undraw_box"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.441"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/deliveryRequest"
+                android:layout_width="299dp"
+                android:layout_height="49dp"
+                android:layout_marginTop="108dp"
+                android:text="MAKE PARCEL DELIVERY REQUEST"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- ImageView 1 -->
 
             <!-- ImageView 2 -->
 
 
-            <ImageView
-                android:id="@+id/headerImageView"
-                android:layout_width="97dp"
-                android:layout_height="67dp"
-                android:contentDescription="@string/undraw_delivery"
-                android:scaleType="fitCenter"
-                android:src="@drawable/undraw_delivery"
-                app:layout_constraintBottom_toBottomOf="parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <EditText
+                android:id="@+id/parcelDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Parcel Description"
+
+                app:layout_constraintBottom_toBottomOf="@id/attachImageButton"
+                app:layout_constraintEnd_toStartOf="@id/attachImageButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/attachImageButton"
+                android:layout_width="124dp"
+                android:layout_height="41dp"
+                android:text="Attach Image"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/parcelDescription"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@id/hImageView"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintStart_toEndOf="@id/parcelDescription"
+                app:layout_constraintTop_toTopOf="@id/parcelDescription" />
 
-            <ImageView
-                android:id="@+id/hImageView"
-                android:layout_width="151dp"
-                android:layout_height="36dp"
-                android:contentDescription="@string/undraw_name"
-                android:scaleType="fitCenter"
-                android:src="@drawable/undraw_name"
-                tools:layout_editor_absoluteX="-7dp"
-                tools:layout_editor_absoluteY="16dp" />
-
-            <TextView
-                android:id="@+id/deliveryRequest"
-                android:layout_width="177dp"
-                android:layout_height="64dp"
-                android:text="Delivery Request"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                tools:layout_editor_absoluteX="177dp"
-                tools:layout_editor_absoluteY="108dp" />
-
+            <!-- Other views here -->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <EditText
-            android:id="@+id/parcelDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Parcel Description" />
-
-        <Button
-            android:id="@+id/attachImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Attach Image" />
 
         <TextView
             android:id="@+id/imageAttachedTextView"
@@ -89,11 +97,6 @@
             android:visibility="gone" />
 
 
-        <Spinner
-            android:id="@+id/parcelSize"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
         <EditText
             android:id="@+id/parcelWeight"
             android:layout_width="match_parent"
@@ -106,30 +109,66 @@
             android:layout_height="wrap_content"
             android:text="Contains Fragile Items" />
 
-        <!-- Pickup Location Section -->
-        <AutoCompleteTextView
-            android:id="@+id/pickupAddressAutoComplete"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:completionThreshold="2"
-            android:hint="Enter pickup address"
-            android:imeOptions="actionSearch"
-            android:inputType="textPostalAddress"
-            android:maxLines="1" />
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/addPickupDetailsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Details" />
+            <!-- Details Button aligned to the left side -->
+
+            <!-- Use GPS Button aligned to the right side -->
+
+            <!-- Center Guideline -->
+
+            <AutoCompleteTextView
+                android:id="@+id/pickupAddressAutoComplete"
+                android:layout_width="302dp"
+                android:layout_height="41dp"
+                android:completionThreshold="2"
+                android:hint="Enter pickup address"
+                android:imeOptions="actionSearch"
+                android:inputType="textPostalAddress"
+                android:maxLines="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-        <Button
-            android:id="@+id/useGpsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:rotationX="-15"
-            android:text="Use GPS" />
+            <Button
+                android:id="@+id/addPickupDetailsButton"
+                android:layout_width="87dp"
+                android:layout_height="39dp"
+                android:text="Details"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pickupAddressAutoComplete" />
+
+            <ImageView
+                android:id="@+id/gpsImageView"
+                android:layout_width="35dp"
+                android:layout_height="20dp"
+                android:clickable="true"
+                android:contentDescription="@string/location"
+                android:focusable="true"
+                android:src="@drawable/location"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.127" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
             android:id="@+id/pickupContactName"
@@ -157,7 +196,8 @@
         <Button
             android:id="@+id/addDeliveryDetailsButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:textSize="12sp"
             android:text="Details" />
 
         <EditText
@@ -204,6 +244,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Submit Request" />
+
 
 
     </LinearLayout>

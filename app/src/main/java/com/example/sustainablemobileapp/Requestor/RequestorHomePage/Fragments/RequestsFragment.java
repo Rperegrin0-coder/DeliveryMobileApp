@@ -203,6 +203,8 @@ public class RequestsFragment extends Fragment {
         // Initialize EditText fields
         parcelDescription = view.findViewById(R.id.parcelDescription);
         parcelWeight = view.findViewById(R.id.parcelWeight);
+
+
         pickupAddress = view.findViewById(R.id.pickupAddressAutoComplete);
         pickupContactName = view.findViewById(R.id.pickupContactName);
         pickupContactPhone = view.findViewById(R.id.pickupContactPhone);
@@ -214,15 +216,15 @@ public class RequestsFragment extends Fragment {
         additionalInstructions = view.findViewById(R.id.additionalInstructions);
 
         // Initialize Spinner and CheckBox
-        parcelSize = view.findViewById(R.id.parcelSize); // Replace with your actual Spinner ID
+        //parcelSize = view.findViewById(R.id.parcelSize); // Replace with your actual Spinner ID
         fragileCheckbox = view.findViewById(R.id.fragileCheckbox); // Replace with your actual CheckBox ID
 
         // Initialize Button
         submitRequestButton = view.findViewById(R.id.submitRequestButton);
 
-        Button useGPSButton = view.findViewById(R.id.useGpsButton); // Ensure you have this button in your layout
-        useGPSButton.setOnClickListener(v -> {
-            if (gps.isPermissionGranted()) {
+        ImageView useGpsImageView = view.findViewById(R.id.gpsImageView);
+        useGpsImageView.setOnClickListener(v -> {
+            if(gps.isPermissionGranted()) {
                 fetchCurrentLocation();
             } else {
                 requestLocationPermissions();
@@ -385,6 +387,7 @@ public class RequestsFragment extends Fragment {
                     } else {
                         Log.e(TAG, "ImageView not found in the layout.");
                     }
+                    capturedImageView.setVisibility(View.VISIBLE);
 
                     // Add any additional actions you want to perform with the imageBitmap here
                 } else {
