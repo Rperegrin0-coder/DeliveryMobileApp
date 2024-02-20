@@ -15,7 +15,7 @@
 
     <string name="undraw_box">Description of the header image</string>
     <string name="location" />
-
+    <string name="profile_picture_description" />
 
 
 </resources>

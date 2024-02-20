@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="216dp"
+        android:layout_marginBottom="68dp"
         android:orientation="vertical"
         android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,19 +20,27 @@
         <!-- TextView for Parcel Description -->
         <TextView
             android:id="@+id/tvParcelDescription"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Parcel Description: " />
 
+        <!-- TextView for Parcel Weight -->
+
         <TextView
             android:id="@+id/r_parcelDescriptionTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="Parcel Description"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-        <!-- TextView for Parcel Weight -->
+
+        <TextView
+            android:id="@+id/tvParcelWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Parcel Weight: " />
+
         <TextView
             android:id="@+id/parcelWeightTextView"
             android:layout_width="match_parent"
@@ -42,6 +50,14 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <!-- TextView for Pickup Address -->
+
+        <TextView
+            android:id="@+id/tvpickupAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pickup Address: " />
+
+
         <TextView
             android:id="@+id/pickupAddressTextView"
             android:layout_width="match_parent"
@@ -51,6 +67,13 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <!-- TextView for Pickup Contact Name -->
+
+        <TextView
+            android:id="@+id/tvpickupContactName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pickup Contact Name: " />
+
         <TextView
             android:id="@+id/pickupContactNameTextView"
             android:layout_width="match_parent"
@@ -60,6 +83,13 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <!-- TextView for Pickup Contact Phone -->
+
+        <TextView
+            android:id="@+id/tvpickupContactPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pickup Contact Phone: " />
+
         <TextView
             android:id="@+id/pickupContactPhoneTextView"
             android:layout_width="match_parent"
@@ -69,6 +99,13 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <!-- TextView for Delivery Address -->
+
+        <TextView
+            android:id="@+id/tvdeliveryAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delivery Address: " />
+
         <TextView
             android:id="@+id/deliveryAddressTextView"
             android:layout_width="match_parent"
@@ -79,6 +116,12 @@
 
         <!-- TextView for Delivery Recipient Name -->
         <TextView
+            android:id="@+id/tvdeliveryRecipientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delivery Recipient Name: " />
+
+        <TextView
             android:id="@+id/deliveryRecipientNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,6 +130,12 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <!-- TextView for Delivery Recipient Phone -->
+        <TextView
+            android:id="@+id/tvdeliveryRecipientPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delivery Recipient Phone: " />
+
         <TextView
             android:id="@+id/deliveryRecipientPhoneTextView"
             android:layout_width="match_parent"
@@ -97,6 +146,12 @@
 
         <!-- TextView for Pickup Date and Time -->
         <TextView
+            android:id="@+id/tvpickupdateandtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pickup Date and Time: " />
+
+        <TextView
             android:id="@+id/pickupDateTimeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,6 +160,13 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <!-- TextView for Delivery Date and Time -->
+
+        <TextView
+            android:id="@+id/tvdeliverydateandtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delivery Date and Time: " />
+
         <TextView
             android:id="@+id/deliveryDateTimeTextView"
             android:layout_width="match_parent"
@@ -114,6 +176,13 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <!-- TextView for Additional Instructions -->
+
+        <TextView
+            android:id="@+id/tvAdditionalInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Additional Instructions: " />
+
         <TextView
             android:id="@+id/additionalInstructionsTextView"
             android:layout_width="match_parent"

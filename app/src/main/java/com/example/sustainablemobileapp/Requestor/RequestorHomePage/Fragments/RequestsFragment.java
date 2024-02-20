@@ -391,7 +391,7 @@ public class RequestsFragment extends Fragment {
 
                     // Add any additional actions you want to perform with the imageBitmap here
                 } else {
-                    Log.e(TAG, "No image data received from the camera.");
+                    Log.e(TAG, "Image data received from the camera is null. Image not attached to Bitmap.");
                 }
             } else {
                 Log.e(TAG, "Camera intent returned null extras.");

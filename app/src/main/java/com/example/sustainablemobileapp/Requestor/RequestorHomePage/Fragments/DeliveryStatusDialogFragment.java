@@ -52,12 +52,30 @@ public class DeliveryStatusDialogFragment extends DialogFragment {
 
         if (view != null && deliveryStatus != null) {
             // Initialize TextViews from the layout
-            TextView parcelDescriptionTextView = view.findViewById(R.id.r_parcelDescriptionTextView); // Ensure correct ID
-            TextView deliveryDateTimeTextView = view.findViewById(R.id.deliveryDateTimeTextView); // Ensure correct ID
+            TextView parcelDescriptionTextView = view.findViewById(R.id.r_parcelDescriptionTextView);
+            TextView parcelWeightTextView = view.findViewById(R.id.parcelWeightTextView);
+            TextView pickupAddressTextView = view.findViewById(R.id.pickupAddressTextView);
+            TextView pickupContactNameTextView = view.findViewById(R.id.pickupContactNameTextView);
+            TextView pickupContactPhoneTextView = view.findViewById(R.id.pickupContactPhoneTextView);
+            TextView deliveryAddressTextView = view.findViewById(R.id.deliveryAddressTextView);
+            TextView deliveryRecipientNameTextView = view.findViewById(R.id.deliveryRecipientNameTextView);
+            TextView deliveryRecipientPhoneTextView = view.findViewById(R.id.deliveryRecipientPhoneTextView);
+            TextView pickupDateTimeTextView = view.findViewById(R.id.pickupDateTimeTextView);
+            TextView deliveryDateTimeTextView = view.findViewById(R.id.deliveryDateTimeTextView);
+            TextView additionalInstructionsTextView = view.findViewById(R.id.additionalInstructionsTextView);
 
             // Set text to each TextView
             parcelDescriptionTextView.setText(deliveryStatus.getParcelDescription());
+            parcelWeightTextView.setText(deliveryStatus.getParcelWeight());
+            pickupAddressTextView.setText(deliveryStatus.getPickupAddress());
+            pickupContactNameTextView.setText(deliveryStatus.getPickupContactName());
+            pickupContactPhoneTextView.setText(deliveryStatus.getPickupContactPhone());
+            deliveryAddressTextView.setText(deliveryStatus.getDeliveryAddress());
+            deliveryRecipientNameTextView.setText(deliveryStatus.getDeliveryRecipientName());
+            deliveryRecipientPhoneTextView.setText(deliveryStatus.getDeliveryRecipientPhone());
+            pickupDateTimeTextView.setText(deliveryStatus.getPickupDateTime());
             deliveryDateTimeTextView.setText(deliveryStatus.getDeliveryDateTime());
+            additionalInstructionsTextView.setText(deliveryStatus.getAdditionalInstructions());
             // Continue setting text for other details as needed
         } else {
             Log.e("DeliveryStatusDialog", "View or DeliveryStatus is null.");

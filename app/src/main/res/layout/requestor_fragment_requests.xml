@@ -27,7 +27,7 @@
                 android:layout_marginTop="4dp"
                 android:contentDescription="@string/undraw_box"
                 android:scaleType="fitCenter"
-                android:src="@drawable/undraw_box"
+                android:src="@drawable/requestor_header"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.441"
                 app:layout_constraintStart_toStartOf="parent"
