@@ -13,6 +13,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -416,6 +418,13 @@ public class RequestsFragment extends Fragment {
                         // If no image, proceed without image
                         saveRequestToFirebase(randomNumber, null);
                     }
+                    // Delay showing the notification
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showNotificationForRequest();
+                        }
+                    }, 7000); // Delay for 3 seconds
                 } else {
                     // Handle error or null cases
                     String error = randomNumber != null ? randomNumber : "Error generating parcel number. Please try again.";
@@ -424,6 +433,7 @@ public class RequestsFragment extends Fragment {
             }
         });
     }
+
 
     private void uploadImageAndSaveRequest(String parcelNumber, Bitmap image) {
         // Initialize Firebase Storage
@@ -520,7 +530,7 @@ public class RequestsFragment extends Fragment {
             databaseReference.child("requests").push().setValue(requestData)
                     .addOnSuccessListener(aVoid -> {
                         // Call showNotificationForRequest() here after successful submission
-                        showNotificationForRequest();
+
                         Toast.makeText(getContext(), "Request submitted successfully", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "Request data added successfully");
                     })
@@ -533,7 +543,7 @@ public class RequestsFragment extends Fragment {
             Log.e(TAG, "NullPointerException caught in saveRequestToFirebase", e);
         }
 
-    // Additional methods (e.g., DatePickerDialog)...
+        // Additional methods (e.g., DatePickerDialog)...
     }
 
     private void showNotificationForRequest() {
@@ -549,10 +559,11 @@ public class RequestsFragment extends Fragment {
         // Proceed with showing the notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "REQUEST_CHANNEL_ID")
-                .setSmallIcon(R.drawable.ic_notification)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "reminders")
+                .setSmallIcon(R.drawable.deliveroo)
                 .setContentTitle("Request Submitted")
                 .setContentText("Your request is awaiting a driver to pick up.")
+                .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH); // For the notification itself
 
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -562,11 +573,3 @@ public class RequestsFragment extends Fragment {
         }
     }
 }
-
-
-
-
-
-
-
-

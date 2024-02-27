@@ -111,15 +111,10 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="378dp"
+            android:layout_height="82dp">
 
-            <!-- Details Button aligned to the left side -->
-
-            <!-- Use GPS Button aligned to the right side -->
-
-            <!-- Center Guideline -->
-
+            <!-- AutoCompleteTextView for pickup address -->
             <AutoCompleteTextView
                 android:id="@+id/pickupAddressAutoComplete"
                 android:layout_width="302dp"
@@ -134,17 +129,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- ImageView for GPS -->
 
-            <Button
-                android:id="@+id/addPickupDetailsButton"
-                android:layout_width="87dp"
-                android:layout_height="39dp"
-                android:text="Details"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pickupAddressAutoComplete" />
+            <!-- Use GPS Button aligned underneath the ImageView -->
+
+            <!-- Guideline for centering -->
 
             <ImageView
                 android:id="@+id/gpsImageView"
@@ -154,12 +143,12 @@
                 android:contentDescription="@string/location"
                 android:focusable="true"
                 android:src="@drawable/location"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/pickupAddressAutoComplete"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.127" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/pickupAddressAutoComplete"
+                app:layout_constraintTop_toTopOf="@id/pickupAddressAutoComplete"
+                app:layout_constraintVertical_bias="0.333" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidelineCenter"
@@ -168,7 +157,20 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.5" />
 
+            <Button
+                android:id="@+id/addPickupDetailsButton"
+                android:layout_width="86dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="40dp"
+                android:text="Details"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.811"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <EditText
             android:id="@+id/pickupContactName"
@@ -183,28 +185,48 @@
             android:hint="Contact Phone Number" />
 
         <!-- Delivery Location Section -->
-        <AutoCompleteTextView
-            android:id="@+id/deliveryAddressAutoComplete"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:completionThreshold="2"
-            android:hint="Enter delivery address"
-            android:imeOptions="actionSearch"
-            android:inputType="textPostalAddress"
-            android:maxLines="1" />
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/addDeliveryDetailsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:textSize="12sp"
-            android:text="Details" />
+            <!-- AutoCompleteTextView for delivery address -->
+            <AutoCompleteTextView
+                android:id="@+id/deliveryAddressAutoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:completionThreshold="2"
+                android:hint="Enter delivery address"
+                android:imeOptions="actionSearch"
+                android:inputType="textPostalAddress"
+                android:maxLines="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        <EditText
-            android:id="@+id/deliveryRecipientName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Recipient Name" />
+            <!-- Button for delivery details, aligned to the right -->
+
+            <!-- EditText for recipient name -->
+            <Button
+                android:id="@+id/addDeliveryDetailsButton"
+                android:layout_width="90dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="4dp"
+                android:text="Details"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/deliveryAddressAutoComplete" />
+
+            <EditText
+                android:id="@+id/deliveryRecipientName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Recipient Name"
+                app:layout_constraintTop_toBottomOf="@id/addDeliveryDetailsButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <EditText
             android:id="@+id/deliveryRecipientPhone"

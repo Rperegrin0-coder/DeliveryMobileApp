@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //createNotificationChannel();
+
+        createNotificationChannel();
 
 
         mAuth = FirebaseAuth.getInstance(); // Initialize Firebase Auth
@@ -142,33 +143,22 @@ public class MainActivity extends AppCompatActivity {
         // Handle other permission requests by checking other request codes, if applicable
     }
 
-
     private void createNotificationChannel() {
-        Log.d("NotificationChannel", "Starting to create notification channel");
-
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is not in the Support Library.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name); // Ensure this string resource exists.
-            String description = getString(R.string.channel_description); // Ensure this string resource exists.
+            CharSequence name = "Notifications";
+            String description = "Delivery Notifications.";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            NotificationChannel channel = new NotificationChannel("reminders", name, importance);
             channel.setDescription(description);
-
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this.
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            if (notificationManager != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                        // Request permission
-                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_POST_NOTIFICATIONS);
-                    }
-                }
-                notificationManager.createNotificationChannel(channel);
-                Log.d("NotificationChannel", "Notification channel created successfully");
-            } else {
-                Log.e("MainActivity", "NotificationManager not available");
-            }
-        } else {
-            Log.d("NotificationChannel", "Not creating notification channel because Android version is below Oreo");
+            notificationManager.createNotificationChannel(channel);
         }
     }
+
+
+
 }

@@ -26,23 +26,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeliveryStatusFragment extends Fragment {
+
     private RecyclerView deliveryStatusRecyclerView;
     private DeliveryStatusAdapter adapter;
 
-    private List<DeliveryStatus> deliveryStatusList= new ArrayList<>();
+    private List<DeliveryStatus> deliveryStatusList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.requestor_fragment_delivery_status, container, false);
+
+        // Find RecyclerView
         deliveryStatusRecyclerView = view.findViewById(R.id.deliveryStatusRecyclerView);
         deliveryStatusRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialize your adapter with some dummy data or actual data if available
-        //deliveryStatusList = createDummyData();
-
-
-
+        // Initialize your adapter
         adapter = new DeliveryStatusAdapter(deliveryStatusList, new DeliveryStatusAdapter.OnDetailsButtonClickListener() {
             @Override
             public void onViewDetailsButtonClick(DeliveryStatus deliveryStatus) {
@@ -50,14 +49,19 @@ public class DeliveryStatusFragment extends Fragment {
             }
         });
 
+        // Set adapter to RecyclerView
         deliveryStatusRecyclerView.setAdapter(adapter);
+
+        // Fetch delivery requests data (only fetch once, at the beginning)
+        fetchDeliveryRequests();
 
         return view;
     }
 
+    // Method to fetch delivery requests data from Firebase
     private void fetchDeliveryRequests() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("requests");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 deliveryStatusList.clear(); // Clear the current list
@@ -76,7 +80,6 @@ public class DeliveryStatusFragment extends Fragment {
             }
         });
     }
-
 
 //    private List<DeliveryStatus> createDummyData() {
 //        // Dummy data for testing

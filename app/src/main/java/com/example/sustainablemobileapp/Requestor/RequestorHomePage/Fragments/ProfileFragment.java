@@ -1,5 +1,6 @@
 package com.example.sustainablemobileapp.Requestor.RequestorHomePage.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +10,14 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.sustainablemobileapp.MainActivity;
 import com.example.sustainablemobileapp.R;
+
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private TextView textViewName;
-    private Button buttonHistory, buttonPayments, buttonAccountDetails, buttonContactUs;
+    private Button buttonHistory, buttonPayments, buttonAccountDetails, buttonContactUs, buttonLogout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,6 +30,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         buttonPayments = view.findViewById(R.id.buttonPayments);
         buttonAccountDetails = view.findViewById(R.id.buttonAccountDetails);
         buttonContactUs = view.findViewById(R.id.buttonContactUs);
+        buttonLogout = view.findViewById(R.id.logoutButton);
 
         // Set user's name (replace "User's Name" with the actual user's name)
         textViewName.setText("User's Name");
@@ -36,6 +40,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         buttonPayments.setOnClickListener(this);
         buttonAccountDetails.setOnClickListener(this);
         buttonContactUs.setOnClickListener(this);
+        buttonLogout.setOnClickListener(this);
 
         return view;
     }
@@ -51,7 +56,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             // Handle Account Details option
         } else if (v.getId() == R.id.buttonContactUs) {
             // Handle Contact Us option
+        } else if (v.getId() == R.id.logoutButton) {
+            logout();
         }
     }
-}
 
+    private void logout() {
+        // Handle logout action here, such as navigating to the login screen or clearing user session
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+        getActivity().finish(); // Finish the current activity to prevent back navigation
+    }
+}
