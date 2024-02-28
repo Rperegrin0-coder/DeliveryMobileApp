@@ -57,27 +57,27 @@
             <EditText
                 android:id="@+id/parcelDescription"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:hint="Parcel Description"
-
-                app:layout_constraintBottom_toBottomOf="@id/attachImageButton"
-                app:layout_constraintEnd_toStartOf="@id/attachImageButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/attachImage"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintHorizontal_bias="0.0"/>
 
             <Button
-                android:id="@+id/attachImageButton"
-                android:layout_width="124dp"
-                android:layout_height="41dp"
+                android:id="@+id/attachImage"
+                android:layout_width="116dp"
+                android:layout_height="50dp"
                 android:text="Attach Image"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@id/parcelDescription"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/parcelDescription"
-                app:layout_constraintTop_toTopOf="@id/parcelDescription" />
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/parcelDescription"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Other views here -->
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
         <TextView

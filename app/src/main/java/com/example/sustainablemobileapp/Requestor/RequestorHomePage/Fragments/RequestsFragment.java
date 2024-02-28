@@ -4,17 +4,21 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;  // Correct import for Manifest
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +78,7 @@ public class RequestsFragment extends Fragment {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 200;
 
+    private static final int PICK_IMAGE_REQUEST = 124;
 
     // UI components declaration
     private EditText parcelDescription, parcelWeight, pickupAddress, pickupContactName,
@@ -170,6 +175,7 @@ public class RequestsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.requestor_fragment_requests, container, false);
+
         // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance();
 
@@ -186,6 +192,9 @@ public class RequestsFragment extends Fragment {
         addDeliveryDetailsButton.setOnClickListener(v -> openAddressDetailsDialog("delivery"));
 
 
+        Button addPhotoButton = view.findViewById(R.id.attachImage);
+
+
         GooglePlacesAutocomplete adapter = new GooglePlacesAutocomplete(getContext(), R.layout.requestor_autocomplete_place_item);
         pickupAddressAutoComplete.setAdapter(adapter);
         deliveryAddressAutoComplete.setAdapter(adapter);
@@ -198,8 +207,8 @@ public class RequestsFragment extends Fragment {
 
         Camera camera = new Camera(getActivity());
 
-        Button takePhotoButton = view.findViewById(R.id.attachImageButton);
-        takePhotoButton.setOnClickListener(v -> requestCameraPermission());
+
+
 
 
         // Initialize EditText fields
@@ -224,12 +233,21 @@ public class RequestsFragment extends Fragment {
         // Initialize Button
         submitRequestButton = view.findViewById(R.id.submitRequestButton);
 
+
+
         ImageView useGpsImageView = view.findViewById(R.id.gpsImageView);
         useGpsImageView.setOnClickListener(v -> {
             if(gps.isPermissionGranted()) {
                 fetchCurrentLocation();
             } else {
                 requestLocationPermissions();
+            }
+        });
+
+        addPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showImageSourceDialog();
             }
         });
 
@@ -326,12 +344,18 @@ public class RequestsFragment extends Fragment {
     }
 
     private void showImageAttachedMessage() {
+        Log.d(TAG, "Attempting to show 'Image Attached' message.");
+
         // Find the TextView and set its text
         TextView imageAttachedTextView = getView().findViewById(R.id.imageAttachedTextView);
         imageAttachedTextView.setText("Image Attached");
+
         // Make the TextView visible
         imageAttachedTextView.setVisibility(View.VISIBLE);
+
+        Log.d(TAG, "'Image Attached' message displayed successfully.");
     }
+
 
     // Function to open the address details dialog
     private void openAddressDetailsDialog(String addressType) {
@@ -345,9 +369,6 @@ public class RequestsFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-
-
         super.onActivityResult(requestCode, resultCode, data);
 
         Log.d(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
@@ -367,41 +388,74 @@ public class RequestsFragment extends Fragment {
         }
 
         // Handle the result from the camera intent
-        if (requestCode == Camera.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && data != null) {
+        else if (requestCode == Camera.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && data != null) {
             Bundle extras = data.getExtras();
             if (extras != null) {
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
 
                 if (imageBitmap != null) {
                     Log.d(TAG, "Image captured successfully.");
-
-                    // Assuming parcelImage is a class variable where you store the captured image
-                    parcelImage = imageBitmap;
-
-                    // Show the image attached message
-                    showImageAttachedMessage();
-
-                    // Update ImageView with the captured image
-                    ImageView capturedImageView = getView().findViewById(R.id.capturedImageView); // Make sure this ID matches your layout
-                    if (capturedImageView != null) {
-                        capturedImageView.setImageBitmap(imageBitmap);
-                        Log.d(TAG, "Captured image set to ImageView.");
-                    } else {
-                        Log.e(TAG, "ImageView not found in the layout.");
-                    }
-                    capturedImageView.setVisibility(View.VISIBLE);
-
-                    // Add any additional actions you want to perform with the imageBitmap here
+                    handleImage(imageBitmap);
                 } else {
                     Log.e(TAG, "Image data received from the camera is null. Image not attached to Bitmap.");
                 }
             } else {
                 Log.e(TAG, "Camera intent returned null extras.");
             }
+        }
+
+        // Handle the result from selecting an image from the gallery
+        else if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            Uri selectedImageUri = data.getData();
+            if (selectedImageUri != null) {
+                Log.d(TAG, "Image selected from gallery.");
+                try {
+                    Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                    handleImage(imageBitmap);
+                } catch (IOException e) {
+                    Log.e(TAG, "Exception in converting URI to Bitmap", e);
+                }
+            } else {
+                Log.e(TAG, "Selected image URI is null.");
+            }
         } else {
             Log.d(TAG, "Unhandled requestCode or resultCode in onActivityResult.");
         }
     }
+
+    private void handleImage(Bitmap imageBitmap) {
+        // Example dimensions for a thumbnail
+        int width = 100; // Adjust width as needed
+        int height = 100; // Adjust height as needed
+
+        // Create a thumbnail from the original Bitmap
+        Bitmap thumbnail = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+
+        // Assuming parcelImage is a class variable where you store the thumbnail
+        parcelImage = thumbnail;
+
+        // Assuming there's an ImageView with ID capturedImageView in your layout
+        ImageView capturedImageView = getView().findViewById(R.id.capturedImageView);
+        if (capturedImageView != null) {
+            capturedImageView.setImageBitmap(thumbnail); // Set the thumbnail to ImageView
+            Log.d(TAG, "Thumbnail image set to ImageView.");
+        } else {
+            Log.e(TAG, "ImageView not found in the layout.");
+        }
+
+        // Show a Toast message to indicate the image is attached
+        Toast.makeText(getActivity(), "Image attached successfully", Toast.LENGTH_SHORT).show();
+
+        // Update the status TextView to indicate the image is attached
+        TextView statusTextView = getView().findViewById(R.id.attachImage); // Make sure this ID matches your layout
+        if (statusTextView != null) {
+            statusTextView.setText("Image attached");
+            Log.d(TAG, "Status text updated to indicate image is attached.");
+        } else {
+            Log.e(TAG, "Status TextView not found in the layout.");
+        }
+    }
+
 
 
 
@@ -424,7 +478,7 @@ public class RequestsFragment extends Fragment {
                         public void run() {
                             showNotificationForRequest();
                         }
-                    }, 7000); // Delay for 3 seconds
+                    }, 5000); // Delay for 3 seconds
                 } else {
                     // Handle error or null cases
                     String error = randomNumber != null ? randomNumber : "Error generating parcel number. Please try again.";
@@ -436,39 +490,37 @@ public class RequestsFragment extends Fragment {
 
 
     private void uploadImageAndSaveRequest(String parcelNumber, Bitmap image) {
-        // Initialize Firebase Storage
+        Log.d(TAG, "Initializing Firebase Storage for image upload.");
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         StorageReference imageRef = storageRef.child("images/" + parcelNumber + ".jpg");
 
-        // Convert Bitmap to ByteArrayOutputStream
+        Log.d(TAG, "Converting Bitmap to ByteArrayOutputStream.");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageData = baos.toByteArray();
 
-        // Upload the image
+        Log.d(TAG, "Starting image upload.");
         UploadTask uploadTask = imageRef.putBytes(imageData);
         uploadTask.addOnSuccessListener(taskSnapshot -> {
-            // Image uploaded successfully, now get the download URL
+            Log.d(TAG, "Image upload successful. Attempting to retrieve download URL.");
             taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(downloadUri -> {
                 String imageUrl = downloadUri.toString();
-                Log.d(TAG, "Image uploaded: " + imageUrl); // Log the URL of the uploaded image
+                Log.d(TAG, "Image URL retrieved successfully: " + imageUrl);
                 saveRequestToFirebase(parcelNumber, imageUrl);
             }).addOnFailureListener(e -> {
-                // Handle any errors in getting the download URL
-                Log.e(TAG, "Error getting image URL", e);
+                Log.e(TAG, "Failed to retrieve image download URL.", e);
             });
         }).addOnFailureListener(e -> {
-            // Handle unsuccessful uploads
-            Log.e(TAG, "Error uploading image", e);
+            Log.e(TAG, "Image upload failed.", e);
         });
 
-        // You can also add a progress listener if you want to show upload progress
         uploadTask.addOnProgressListener(taskSnapshot -> {
             double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-            Log.d(TAG, "Upload is " + progress + "% done");
+            Log.d(TAG, String.format("Upload progress: %.2f%% done", progress));
         });
     }
+
 
 
     private void saveRequestToFirebase(String parcelNumber, @Nullable String imageUrl) {
@@ -572,4 +624,37 @@ public class RequestsFragment extends Fragment {
             notificationManager.notify(1, builder.build());
         }
     }
+
+    public void openImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    private void showImageSourceDialog() {
+        CharSequence[] items = {"Take Photo", "Choose from Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()); // Use getActivity() here
+        builder.setTitle("Add Photo");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    // User chose "Take Photo"
+                    // Check for camera permission before taking a photo
+                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        // Permission is not granted, request it
+                        requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
+                    } else {
+                        // Permission is already granted, proceed to take a photo
+                        camera.takePhoto();
+                    }
+                } else if (which == 1) {
+                    // User chose "Choose from Gallery"
+                    openImagePicker();
+                }
+            }
+        });
+        builder.show();
+    }
+
 }

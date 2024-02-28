@@ -7,7 +7,7 @@ import android.provider.MediaStore;
 public class Camera {
 
     private Activity activity;
-    public static final int REQUEST_IMAGE_CAPTURE = 1;
+    public static final int REQUEST_IMAGE_CAPTURE = 123;
 
     public Camera(Activity activity) {
         this.activity = activity;

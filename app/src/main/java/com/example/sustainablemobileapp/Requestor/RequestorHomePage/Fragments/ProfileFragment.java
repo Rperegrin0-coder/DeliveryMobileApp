@@ -2,6 +2,7 @@ package com.example.sustainablemobileapp.Requestor.RequestorHomePage.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.sustainablemobileapp.MainActivity;
 import com.example.sustainablemobileapp.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -33,7 +41,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         buttonLogout = view.findViewById(R.id.logoutButton);
 
         // Set user's name (replace "User's Name" with the actual user's name)
-        textViewName.setText("User's Name");
+        textViewName = view.findViewById(R.id.nameTextView);
 
         // Set click listeners for menu options
         buttonHistory.setOnClickListener(this);
@@ -42,7 +50,36 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         buttonContactUs.setOnClickListener(this);
         buttonLogout.setOnClickListener(this);
 
+        fetchAndSetUserName();
+
         return view;
+    }
+    private void fetchAndSetUserName() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String currentUserId = currentUser.getUid(); // Get the unique user ID
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("RequestorUsers").child(currentUserId);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Assuming "fullName" is the key for the user's name in the database
+                        String fullName = dataSnapshot.child("fullName").getValue(String.class);
+                        textViewName.setText(fullName != null ? fullName : "No name provided");
+                    } else {
+                        textViewName.setText("User data not found");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.w("ProfileFragment", "loadUserName:onCancelled", databaseError.toException());
+                    textViewName.setText("Failed to load user data");
+                }
+            });
+        } else {
+            textViewName.setText("Not signed in");
+        }
     }
 
     @Override

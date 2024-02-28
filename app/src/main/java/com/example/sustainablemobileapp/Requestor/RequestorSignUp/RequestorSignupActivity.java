@@ -1,6 +1,8 @@
 package com.example.sustainablemobileapp.Requestor.RequestorSignUp;
 
 
+import static android.app.PendingIntent.getActivity;
+
 import com.example.sustainablemobileapp.R;
 
 import com.example.sustainablemobileapp.MainActivity;
@@ -34,6 +36,10 @@ public class RequestorSignupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
+    private Button buttonBack;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +57,14 @@ public class RequestorSignupActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         confirmPassword = findViewById(R.id.confirmPassword);
         buttonSignUp = findViewById(R.id.buttonSignUp);
+
+        buttonBack = findViewById(R.id.buttonback);
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                back();
+            }
+        });
 
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,4 +123,11 @@ public class RequestorSignupActivity extends AppCompatActivity {
             }
         });
     }
+    private void back() {
+        // Navigate back to the MainActivity
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish(); // If you want to close the signup activity
+    }
+
 }
