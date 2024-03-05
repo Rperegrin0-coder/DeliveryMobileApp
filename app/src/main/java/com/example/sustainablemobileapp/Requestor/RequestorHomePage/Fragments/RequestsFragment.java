@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,6 +72,8 @@ import com.google.firebase.storage.UploadTask;
 public class RequestsFragment extends Fragment {
     private static final String TAG = "RequestFragment";
 
+   
+
     //constants for requests
     private static final int PICKUP_DATE_REQUEST = 1;
     private static final int DELIVERY_DATE_REQUEST = 2;
@@ -94,6 +97,9 @@ public class RequestsFragment extends Fragment {
     private Bitmap parcelImage;
 
     private Camera camera; // De
+
+
+
 
 
     //Method to show the DatePickerDialog
@@ -258,7 +264,7 @@ public class RequestsFragment extends Fragment {
         submitRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitRequest();
+                validateAndSubmitRequest();
             }
         });
 
@@ -476,7 +482,9 @@ public class RequestsFragment extends Fragment {
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            resetFormFields();
                             showNotificationForRequest();
+
                         }
                     }, 5000); // Delay for 3 seconds
                 } else {
@@ -486,6 +494,22 @@ public class RequestsFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void resetFormFields() {
+        // Clear text in each EditText field
+        parcelDescription.setText("");
+        parcelWeight.setText("");
+        pickupAddress.setText("");
+        pickupContactName.setText("");
+        pickupContactPhone.setText("");
+        deliveryRecipientName.setText("");
+        deliveryRecipientPhone.setText("");
+        pickupDateTime.setText("");
+        deliveryDateTime.setText("");
+        additionalInstructions.setText("");
+
+        // Add more EditText fields to clear as needed
     }
 
 
@@ -640,14 +664,7 @@ public class RequestsFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
                     // User chose "Take Photo"
-                    // Check for camera permission before taking a photo
-                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        // Permission is not granted, request it
-                        requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
-                    } else {
-                        // Permission is already granted, proceed to take a photo
-                        camera.takePhoto();
-                    }
+                    camera.takePhoto();
                 } else if (which == 1) {
                     // User chose "Choose from Gallery"
                     openImagePicker();
@@ -655,6 +672,64 @@ public class RequestsFragment extends Fragment {
             }
         });
         builder.show();
+    }
+
+    private void validateAndSubmitRequest() {
+        // Perform validation checks here
+        if (TextUtils.isEmpty(parcelWeight.getText().toString().trim())) {
+            parcelWeight.setError("Weight is required");
+            return;
+        }
+
+
+
+        if (TextUtils.isEmpty(pickupAddress.getText().toString().trim())) {
+            pickupAddress.setError("Pickup Address  is required");
+            return;
+        }
+
+        if (TextUtils.isEmpty(pickupContactName.getText().toString().trim())) {
+            pickupContactName.setError("Pickup Contact Name is required");
+            return;
+        }
+
+        if (TextUtils.isEmpty(pickupContactPhone.getText().toString().trim())) {
+            pickupContactPhone.setError("Pickup Contact Phone is required");
+            return;
+        }
+
+        if (TextUtils.isEmpty(deliveryAddress.getText().toString().trim())) {
+            deliveryAddress.setError("Delivery Address is required");
+            return;
+        }
+
+        if (TextUtils.isEmpty(deliveryRecipientName.getText().toString().trim())) {
+            deliveryRecipientName.setError("Delivery Recipient Name is required");
+            return;
+        }
+
+        if (TextUtils.isEmpty(deliveryRecipientPhone.getText().toString().trim())) {
+            deliveryRecipientPhone.setError("Delivery Recipient Phone Number is required");
+            return;
+        }
+
+        if (TextUtils.isEmpty(deliveryDateTime.getText().toString().trim())) {
+            deliveryDateTime.setError("Delivery Date and Time is required");
+            return;
+        }
+
+        if (TextUtils.isEmpty(pickupDateTime.getText().toString().trim())) {
+            pickupDateTime.setError("Pickup Date and Time is required");
+            return;
+        }
+
+
+
+
+        // Add more validation checks as needed for other details
+
+        // If all details are filled, proceed to submit the request
+        submitRequest();
     }
 
 }

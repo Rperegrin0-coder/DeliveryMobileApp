@@ -2,6 +2,7 @@ package com.example.sustainablemobileapp.LoginManager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -31,6 +32,16 @@ public class LoginManager {
     public void handleLogin(Activity activity, EditText emailEditText, EditText passwordEditText) {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            emailEditText.setError("Email is required");
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            passwordEditText.setError("Password is required");
+            return;
+        }
 
         // Validate the email and password fields (if needed)
 
