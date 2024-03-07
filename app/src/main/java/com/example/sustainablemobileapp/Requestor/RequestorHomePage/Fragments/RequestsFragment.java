@@ -26,7 +26,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -170,12 +169,8 @@ public class RequestsFragment extends Fragment {
 
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // Now you can reference your view directly
-        animateTextViewSideToSide(view);
-
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         // Initialize the Camera object
         camera = new Camera(getActivity());
 
@@ -205,7 +200,7 @@ public class RequestsFragment extends Fragment {
         addDeliveryDetailsButton.setOnClickListener(v -> openAddressDetailsDialog("delivery"));
 
 
-
+        Button addPhotoButton = view.findViewById(R.id.attachImage);
 
 
         GooglePlacesAutocomplete adapter = new GooglePlacesAutocomplete(getContext(), R.layout.requestor_autocomplete_place_item);
@@ -244,7 +239,7 @@ public class RequestsFragment extends Fragment {
         fragileCheckbox = view.findViewById(R.id.fragileCheckbox); // Replace with your actual CheckBox ID
 
         // Initialize Button
-        TextView submitRequestButton = view.findViewById(R.id.submitRequestButton);
+        submitRequestButton = view.findViewById(R.id.submitRequestButton);
 
 
 
@@ -257,7 +252,7 @@ public class RequestsFragment extends Fragment {
             }
         });
 
-        submitRequestButton.setOnClickListener(new View.OnClickListener() {
+        addPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showImageSourceDialog();
@@ -274,6 +269,8 @@ public class RequestsFragment extends Fragment {
                 validateAndSubmitRequest();
             }
         });
+
+        animateTextViewSideToSide(view);
 
         return view;
     }
@@ -449,7 +446,13 @@ public class RequestsFragment extends Fragment {
         Toast.makeText(getActivity(), "Image attached successfully", Toast.LENGTH_SHORT).show();
 
         // Update the status TextView to indicate the image is attached
-
+        TextView statusTextView = getView().findViewById(R.id.attachImage); // Make sure this ID matches your layout
+        if (statusTextView != null) {
+            statusTextView.setText("Image attached");
+            Log.d(TAG, "Status text updated to indicate image is attached.");
+        } else {
+            Log.e(TAG, "Status TextView not found in the layout.");
+        }
     }
 
 
@@ -485,8 +488,6 @@ public class RequestsFragment extends Fragment {
             }
         });
     }
-
-
 
     private void resetFormFields() {
         // Clear text in each EditText field
@@ -723,7 +724,6 @@ public class RequestsFragment extends Fragment {
         // If all details are filled, proceed to submit the request
         submitRequest();
     }
-
     private void animateTextViewSideToSide(View view) {
         TextView deliveryRequestTextView = view.findViewById(R.id.deliveryRequest);
 
@@ -739,3 +739,5 @@ public class RequestsFragment extends Fragment {
 
 
 }
+
+

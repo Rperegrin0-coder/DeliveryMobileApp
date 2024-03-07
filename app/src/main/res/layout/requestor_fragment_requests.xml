@@ -232,9 +232,9 @@
                     android:imeOptions="actionSearch"
                     android:inputType="textPostalAddress"
                     android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Button for delivery details, aligned to the right of the address input -->
+            <!-- Button for delivery details, aligned to the right of the address input -->
 
             <!-- EditText for recipient name -->
 
@@ -251,36 +251,36 @@
                 app:layout_constraintVertical_bias="1.0" />
 
             <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Recipient Name"
-            app:layout_constraintTop_toBottomOf="@+id/deliveryAddressInputLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+                android:id="@+id/textInputLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Recipient Name"
+                app:layout_constraintTop_toBottomOf="@+id/deliveryAddressInputLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/deliveryRecipientName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/deliveryRecipientName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
-<com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Recipient Phone Number"
             app:endIconMode="clear_text">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/deliveryRecipientPhone"
-        android:layout_width="match_parent"
-        android:layout_height="53dp"
-        android:inputType="phone" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/deliveryRecipientPhone"
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
