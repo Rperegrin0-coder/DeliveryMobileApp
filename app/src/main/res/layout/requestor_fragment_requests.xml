@@ -279,7 +279,7 @@
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/deliveryRecipientPhone"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="53dp"
         android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
