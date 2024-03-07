@@ -242,7 +242,7 @@
                 android:id="@+id/addDeliveryDetailsButton"
                 android:layout_width="86dp"
                 android:layout_height="45dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="13dp"
                 android:text="Details"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/deliveryAddressInputLayout"
