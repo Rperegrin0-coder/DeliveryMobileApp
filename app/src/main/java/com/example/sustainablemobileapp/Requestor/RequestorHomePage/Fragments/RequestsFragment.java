@@ -3,6 +3,8 @@ package com.example.sustainablemobileapp.Requestor.RequestorHomePage.Fragments;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;  // Correct import for Manifest
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
@@ -24,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -72,7 +75,7 @@ import com.google.firebase.storage.UploadTask;
 public class RequestsFragment extends Fragment {
     private static final String TAG = "RequestFragment";
 
-   
+
 
     //constants for requests
     private static final int PICKUP_DATE_REQUEST = 1;
@@ -167,8 +170,12 @@ public class RequestsFragment extends Fragment {
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Now you can reference your view directly
+        animateTextViewSideToSide(view);
+
         // Initialize the Camera object
         camera = new Camera(getActivity());
 
@@ -198,7 +205,7 @@ public class RequestsFragment extends Fragment {
         addDeliveryDetailsButton.setOnClickListener(v -> openAddressDetailsDialog("delivery"));
 
 
-        Button addPhotoButton = view.findViewById(R.id.attachImage);
+
 
 
         GooglePlacesAutocomplete adapter = new GooglePlacesAutocomplete(getContext(), R.layout.requestor_autocomplete_place_item);
@@ -237,7 +244,7 @@ public class RequestsFragment extends Fragment {
         fragileCheckbox = view.findViewById(R.id.fragileCheckbox); // Replace with your actual CheckBox ID
 
         // Initialize Button
-        submitRequestButton = view.findViewById(R.id.submitRequestButton);
+        TextView submitRequestButton = view.findViewById(R.id.submitRequestButton);
 
 
 
@@ -250,7 +257,7 @@ public class RequestsFragment extends Fragment {
             }
         });
 
-        addPhotoButton.setOnClickListener(new View.OnClickListener() {
+        submitRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showImageSourceDialog();
@@ -349,18 +356,7 @@ public class RequestsFragment extends Fragment {
         }
     }
 
-    private void showImageAttachedMessage() {
-        Log.d(TAG, "Attempting to show 'Image Attached' message.");
 
-        // Find the TextView and set its text
-        TextView imageAttachedTextView = getView().findViewById(R.id.imageAttachedTextView);
-        imageAttachedTextView.setText("Image Attached");
-
-        // Make the TextView visible
-        imageAttachedTextView.setVisibility(View.VISIBLE);
-
-        Log.d(TAG, "'Image Attached' message displayed successfully.");
-    }
 
 
     // Function to open the address details dialog
@@ -453,13 +449,7 @@ public class RequestsFragment extends Fragment {
         Toast.makeText(getActivity(), "Image attached successfully", Toast.LENGTH_SHORT).show();
 
         // Update the status TextView to indicate the image is attached
-        TextView statusTextView = getView().findViewById(R.id.attachImage); // Make sure this ID matches your layout
-        if (statusTextView != null) {
-            statusTextView.setText("Image attached");
-            Log.d(TAG, "Status text updated to indicate image is attached.");
-        } else {
-            Log.e(TAG, "Status TextView not found in the layout.");
-        }
+
     }
 
 
@@ -495,6 +485,8 @@ public class RequestsFragment extends Fragment {
             }
         });
     }
+
+
 
     private void resetFormFields() {
         // Clear text in each EditText field
@@ -731,5 +723,19 @@ public class RequestsFragment extends Fragment {
         // If all details are filled, proceed to submit the request
         submitRequest();
     }
+
+    private void animateTextViewSideToSide(View view) {
+        TextView deliveryRequestTextView = view.findViewById(R.id.deliveryRequest);
+
+        float startValue = -100f; // Adjust as necessary
+        float endValue = 100f; // Adjust as necessary
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(deliveryRequestTextView, "translationX", startValue, endValue);
+        animator.setDuration(5000); // Duration in milliseconds
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.start();
+    }
+
 
 }

@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.pm.PackageManager;
@@ -18,6 +20,7 @@ import android.content.Intent;
 import android.Manifest;
 
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 import com.example.sustainablemobileapp.R;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        animateTextViewSideToSide();
 
         createNotificationChannel();
 
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize buttons
         signupButton = findViewById(R.id.signupButton);
+        LinearLayout signupOptions = findViewById(R.id.roleToggleGroup);
         loginButton = findViewById(R.id.loginButton);
         final Button innerLoginButton = findViewById(R.id.submitLoginButton); // The button inside the layout
 
@@ -85,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Inside your onCreate method
         signupButton = findViewById(R.id.signupButton);
-        final LinearLayout signupOptions = findViewById(R.id.signupOptions);
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +169,23 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
+
+    private void animateTextViewSideToSide() {
+        TextView taglineTextView = findViewById(R.id.tagline);
+
+        // Calculate the distance to move (e.g., 100 pixels to the left and right from the current position)
+        float distance = 100f;
+
+        // Create an ObjectAnimator to animate the 'translationX' property
+        ObjectAnimator animator = ObjectAnimator.ofFloat(taglineTextView, "translationX", -distance, distance);
+
+        animator.setDuration(5000); // Duration of the animation (e.g., 1000 milliseconds for 1 second)
+        animator.setRepeatCount(ValueAnimator.INFINITE); // Repeat indefinitely
+        animator.setRepeatMode(ValueAnimator.REVERSE); // Reverse animation at the end so it goes back and forth
+
+        animator.start(); // Start the animation
+    }
+
 
 
 

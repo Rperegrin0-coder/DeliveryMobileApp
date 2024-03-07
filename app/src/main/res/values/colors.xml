@@ -1,5 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="green_primary">#4CAF50</color> <!-- Primary green color -->
+    <color name="green_primary_variant">#388E3C</color> <!-- Darker shade for the primary color -->
+    <color name="green_secondary">#8BC34A</color> <!-- Secondary green color -->
+    <color name="green_secondary_variant">#689F38</color> <!-- Darker shade for the secondary color -->
+    <color name="green_on_primary">#FFFFFF</color> <!-- Color for text/icons on primary color -->
+    <color name="green_on_secondary">#FFFFFF</color> <!-- Color for text/icons on secondary color -->
+    <color name="selected_item_color">#4CAF50</color> <!-- A shade of green -->
+    <color name="unselected_item_color">#808080</color> <!-- A shade of gray for unselected items -->
 </resources>

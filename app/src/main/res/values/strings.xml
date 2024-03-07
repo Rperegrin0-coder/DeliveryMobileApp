@@ -17,6 +17,11 @@
     <string name="undraw_box">Description of the header image</string>
     <string name="location" />
     <string name="profile_picture_description" />
+    <string name="contact_phone_hint" />
+    <string name="select_date" />
+    <string name="password_hint">Password</string>
+    <string name="submit_login">Login</string>
+    <string name="email_hint">Email</string>
 
 
 </resources>

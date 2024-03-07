@@ -56,9 +56,9 @@ public class RequestorSignupActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         confirmPassword = findViewById(R.id.confirmPassword);
-        buttonSignUp = findViewById(R.id.buttonSignUp);
+        buttonSignUp = findViewById(R.id.signUpButton);
 
-        buttonBack = findViewById(R.id.buttonback);
+        buttonBack = findViewById(R.id.backButton);
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

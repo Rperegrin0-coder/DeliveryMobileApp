@@ -47,6 +47,7 @@ public class RequestorHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.requestorhomeactivity);
 
+
         // Find the BottomNavigationView
         BottomNavigationView navigation = findViewById(R.id.bottomNav);
 
